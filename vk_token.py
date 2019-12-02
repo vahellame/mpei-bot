@@ -1,0 +1,3 @@
+# -*- coding: utf-8 -*-
+
+vk_token = "58ef6cb013ba35471e8cf1f6c913260521777191c56cf9e9736551a4f3ed1695e18597bcb4a6ce2f8174e"

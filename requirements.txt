@@ -1,0 +1,5 @@
+requests
+xlrd
+pandas
+vk_api
+schedule
