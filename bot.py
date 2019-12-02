@@ -124,8 +124,10 @@ def mpei_bot():
 
 thread1 = Thread(target=mpei_bot)
 thread2 = Thread(target=weekly_update_loop)
-
+thread3 = Thread(target=daily_update_loop)
 thread1.start()
 thread2.start()
+thread3.start()
 thread1.join()
 thread2.join()
+thread3.join()
