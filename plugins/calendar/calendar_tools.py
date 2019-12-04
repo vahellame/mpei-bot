@@ -100,9 +100,12 @@ def make_datetime_event(weekday, hhmm, count_week):
 def set_free_time_abs(vk_id):
     week_day = take_param(vk_id, "weekday", in_add_db_path)
     meeting_time = take_param(vk_id, "meeting_time", in_add_db_path)
-    if datetime.datetime.now().timestamp() - datetime.datetime(year_e, month_e, day_e).timestamp() > 0:
+    datetime_event = take_param(vk_id, "datetime_event", in_add_db_path)
+    year_e, month_e, day_e = datetime_event.split(" ")[0].split("-")
+    if datetime.datetime.now().timestamp() - datetime.datetime(int(year_e), int(month_e), int(day_e)).timestamp() > 0:
         pass
-    elif datetime.datetime.now().isocalendar()[1] == datetime.datetime(year_e, month_e, day_e).isocalendar()[1]:
+    elif datetime.datetime.now().isocalendar()[1] == \
+            datetime.datetime(int(year_e), int(month_e), int(day_e)).isocalendar()[1]:
         set_free_time(week_day, meeting_time, current_week_path, 0)
     else:
         set_free_time(week_day, meeting_time, next_week_path, 0)

@@ -25,12 +25,12 @@ from plugins.db_tools.db_tools import check_param
 from plugins.db_tools.db_tools import set_param
 from plugins.db_tools.db_tools import check_id
 from plugins.db_tools.db_tools import back_just_dialog
-from plugins.db_tools.db_tools import set_free_time_abs
 
 from plugins.keyboard.keyboards import kb_institutes
 from plugins.keyboard.keyboards import kb_courses
 
 from plugins.calendar.calendar_tools import find_free_time_week
+from plugins.calendar.calendar_tools import set_free_time_abs
 from plugins.calendar.calendar_tools import check_free_time
 from plugins.calendar.calendar_tools import free_time_dict_to_text
 from plugins.calendar.calendar_tools import set_free_time

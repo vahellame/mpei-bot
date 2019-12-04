@@ -15,12 +15,11 @@ main_db_path = "db/users.csv"
 events_db_path = "plugins/add_meeting/events.csv"
 added_users_db_path = "plugins/add_meeting/added_users.csv"
 in_add_db_path = "plugins/add_meeting/in_add.csv"
+admin_stat_path = "plugins/add_meeting/admin_stat.txt"
 
 current_week_path = "plugins/calendar/current_week.csv"
 next_week_path = "plugins/calendar/next_week.csv"
 default_week_path = "plugins/calendar/default_week.csv"
-
-add_meeting_admin_db_path = "plugins/add_meeting/admin.csv"
 
 courses_list = ["1", "2", "3", "4", "Магистратура"]
 institutes_list = ["ЭнМИ", "ИТАЭ", "ИПЭЭф", "ИЭТ", "ИЭЭ", "АВТИ", "ИРЭ", "ГПИ", "ИнЭИ", "ИДДО", "ВИИ", "ИГВИЭ"]
@@ -76,4 +75,19 @@ week_days_num2en_dict = {
     4: "friday",
     5: "saturday",
     6: "sunday"
+}
+
+month_strnum2ru_dict = {
+    "01": "января",
+    "02": 'февраля',
+    "03": 'марта',
+    "04": 'апреля',
+    "05": 'мая',
+    "06": 'июня',
+    "07": 'июля',
+    "08": 'августа',
+    "09": 'сентября',
+    "10": 'октября',
+    "11": 'ноября',
+    "12": 'декабря'
 }

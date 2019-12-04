@@ -8,8 +8,8 @@
 #plugins/calendar/current_week.csv
 #plugins/calendar/default_week.csv
 #plugins/calendar/next_week.csv
+#TEST_FILE_YOU_NEED_TO_DELET_IT.py
 
 .idea/
 .DS_Store
 *__pycache__*
-TEST_FILE_YOU_NEED_TO_DELET_IT.py

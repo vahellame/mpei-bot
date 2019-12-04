@@ -13,9 +13,11 @@ def check_param(vk_id, param, db_path):
 
 
 def take_param(vk_id, param, db_path):
+    res = ""
     df = pd.read_csv(home_path + db_path, header=0, encoding='utf-8')
-    res = df[df["vk_id"] == vk_id][param].iloc[0]
-    res = str(res)
+    if not df.empty:
+        res = df[df["vk_id"] == vk_id][param].iloc[0]
+        res = str(res)
     return res
 
 

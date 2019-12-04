@@ -3,3 +3,4 @@ xlrd
 pandas
 vk_api
 schedule
+openpyxl
