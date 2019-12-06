@@ -38,6 +38,7 @@ from plugins.calendar.calendar_tools import set_free_time
 
 
 def daily_update():
+    send_message(vk_id_admin, "daily_update")
     today = datetime.datetime.now().weekday()
     today = week_days_num2en_dict[today]
     set_free_time(today, "11:00", current_week_path, 1)
@@ -47,21 +48,16 @@ def daily_update():
     set_free_time(today, "17:00", current_week_path, 1)
 
 
-def daily_update_loop():
-    schedule.every().day.at("00:00").do(daily_update)
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-
 def weekly_update():
+    send_message(vk_id_admin, "weekly_update")
     df_next_week = pd.read_csv(home_path + next_week_path, header=0, encoding='utf-8')
     df_next_week.to_csv(home_path + current_week_path, encoding='utf-8', index=False)
     df_default_week = pd.read_csv(home_path + default_week_path, header=0, encoding='utf-8')
     df_default_week.to_csv(home_path + next_week_path, encoding='utf-8', index=False)
 
 
-def weekly_update_loop():
+def shedule_update_loop():
+    schedule.every().day.at("00:00").do(daily_update)
     schedule.every().monday.at("00:00").do(weekly_update)
     while True:
         schedule.run_pending()
@@ -144,13 +140,8 @@ def mpei_bot():
         #         time.sleep(1)
 
 
-thread1 = Thread(target=mpei_bot)
-thread2 = Thread(target=weekly_update_loop)
-thread3 = Thread(target=daily_update_loop)
+thread1 = Thread(target=mpei_bot, daemon=True)
+thread2 = Thread(target=shedule_update_loop, daemon=True)
 thread1.start()
 thread2.start()
-thread3.start()
 print("let it burn")
-thread1.join()
-thread2.join()
-thread3.join()
