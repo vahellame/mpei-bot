@@ -140,8 +140,8 @@ def mpei_bot():
         #         time.sleep(1)
 
 
-thread1 = Thread(target=mpei_bot, daemon=True)
-thread2 = Thread(target=shedule_update_loop, daemon=True)
+thread1 = Thread(target=mpei_bot)
+thread2 = Thread(target=shedule_update_loop)
 thread1.start()
 thread2.start()
 print("let it burn")
