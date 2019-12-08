@@ -1,2 +1,2 @@
 vk_id,name,surname,sex,overwrite,add_user_step,num_of_week,weekday,meeting_time,real_name,institute,course,count_was_here,subject,datetime_added,datetime_event
-319113373,Юля,Кошкина,1,0,0,0,0,0,0,0,0,0,0,0,0
+319113373,Юля,Кошкина,1,1,7,2,0,0,executing phase shift,ИЭЭ,4,0,Не хочу писать о проблеме,0,0
