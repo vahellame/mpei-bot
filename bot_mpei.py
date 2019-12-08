@@ -80,7 +80,7 @@ def mpei_bot():
                     if user_id != vk_id_admin and check_just_dialog(user_id, main_db_path):
                         if body.lower() == "привет":
                             send_message(user_id, "Добро пожаловать. Снова.")
-                        elif body.lower() == "записаться на консультацию" or body.lower() == "вжух":
+                        elif body.lower() == "записаться на консультацию" or body.lower() == "отмена":
                             set_param(user_id, "in_add_meeting", 1, main_db_path)
                             response = add_meeting_request(user_id, body)
                             if response['exit']:

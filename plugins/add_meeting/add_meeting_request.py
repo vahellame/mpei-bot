@@ -51,11 +51,11 @@ def add_user(vk_id, text):
     }
     if step == 0:
         set_param(vk_id, "add_user_step", 1, in_add_db_path)
-        response["message"] = "Как к тебе обращаться?"
+        response["message"] = "Как к Вам обращаться?"
     elif step == 1:
         set_param(vk_id, "real_name", text, added_users_db_path)
         set_param(vk_id, "add_user_step", 2, in_add_db_path)
-        response["message"] = "В каком институте ты учишься?"
+        response["message"] = "Выберите свой институт"
         response["keyboard"] = kb_institutes
     elif step == 2:
         if text.upper() in institutes_list or \
@@ -72,7 +72,7 @@ def add_user(vk_id, text):
                 text = text.upper()
             set_param(vk_id, "add_user_step", 3, in_add_db_path)
             set_param(vk_id, "institute", text, added_users_db_path)
-            response["message"] = "На каком курсе ты учишься?"
+            response["message"] = "Укажите курс"
             response["keyboard"] = kb_courses
         else:
             response["message"] = "Такого института нет в МЭИ)"
@@ -81,8 +81,7 @@ def add_user(vk_id, text):
         if text in courses_list:
             set_param(vk_id, "add_user_step", 4, in_add_db_path)
             set_param(vk_id, "course", text, added_users_db_path)
-            response["message"] = "Какая по счету встреча с психологом Службы психологической поддержки МЭИ?\n" \
-                                  "Если не помнишь, или ни разу не был, отправь 0"
+            response["message"] = "Сколько встреч было?"
             response["keyboard"] = list_to_keyboard(["0"])
         else:
             response["message"] = "Введи корректный курс"
@@ -93,7 +92,7 @@ def add_user(vk_id, text):
 def choose_week(vk_id, response, res_current, res_next):
     res = ""
     if res_current and res_next:
-        res = "этой и следующей неделях. На какую из них тебя записать?"
+        res = "этой и следующей неделях. На какую неделю тебя записать?"
         response["keyboard"] = list_to_keyboard(["На эту", "На следующую"])
     elif res_current and not res_next:
         res = "этой неделе. Записать тебя на нее?"
@@ -170,9 +169,8 @@ def add_meeting_request(vk_id, text):
                 raise Exception(ValueError)
             set_param(vk_id, "count_was_here", count, in_add_db_path)
             set_param(vk_id, "add_user_step", 5, in_add_db_path)
-            response["message"] = "По какому поводу вы обращаетесь? Опишите проблему как можно подробнее. Если не " \
-                                  "хотите писать о проблеме, нажмите кнопку по имени Тык"
-            response["keyboard"] = list_to_keyboard(["Тык"])
+            response["message"] = "Опиши свой запрос, что ты хочешь обсудить на встрече?"
+            response["keyboard"] = list_to_keyboard(["Не хочу писать о проблеме"])
         except Exception as e:
             del e
             response["message"] = "Введи корректное число"
@@ -181,7 +179,7 @@ def add_meeting_request(vk_id, text):
         set_param(vk_id, "add_user_step", 6, in_add_db_path)
         response = choose_week(vk_id, response, res_current, res_next)
     elif step == 6:
-        ps = "На какой день тебя записать?"
+        ps = "Выбери день недели"
         if text.lower() == 'да' and \
                 take_param(vk_id, "num_of_week", in_add_db_path) == '1' and \
                 res_current:
@@ -246,10 +244,9 @@ def add_meeting_request(vk_id, text):
                     hhmms += hhmm
                     if hhmm != free_time_current_week_dict[day][-1]:
                         hhmms += ", "
-                response["message"] = "Хорошо. А теперь выбери время (учти, что сеанс длится 60 минут):\n\n" \
-                                      "{}\n\n" \
-                                      "Отправь время в формате hh mm . Например, '12 00' Обрати внимание, " \
-                                      "что ты должен записаться на ...00 или ...30 минут".format(hhmms)
+                response["message"] = "Выбери удобное время из предложенных вариантов (встреча длится 60 минут, " \
+                                      "ты можешь записаться на начало следующего часа – ... 00; либо на половину " \
+                                      "часа – ... 30)\n{}".format(hhmms)
                 response["keyboard"] = list_to_time_keyboard(hhmms.split(", "))
             else:
                 response["message"] = "Выбери другой день недели"
@@ -270,10 +267,9 @@ def add_meeting_request(vk_id, text):
                     hhmms += hhmm
                     if hhmm != free_time_next_week_dict[day][-1]:
                         hhmms += ", "
-                response["message"] = "Хорошо. А теперь выбери время (учти, что сеанс длится 60 минут):\n\n" \
-                                      "{}\n\n" \
-                                      "Отправь время в формате hh mm . Например, '12 00' Обрати внимание, " \
-                                      "что ты должен записаться на ...00 или ...30 минут".format(hhmms)
+                response["message"] = "Выбери удобное время из предложенных вариантов (встреча длится 60 минут, " \
+                                      "ты можешь записаться на начало следующего часа – ... 00; либо на половину " \
+                                      "часа – ... 30)\n{}".format(hhmms)
                 response["keyboard"] = list_to_time_keyboard(hhmms.split(", "))
             else:
                 response["message"] = "Выбери другой день недели"
@@ -289,9 +285,9 @@ def add_meeting_request(vk_id, text):
                 week_day]) or \
                     (take_param(vk_id, "num_of_week", in_add_db_path) == "2" and meeting_time in
                      free_time_next_week_dict[week_day]):
-                response["message"] = "Заявка отправлена. Ожидайте подтверждения. Если хочешь отменить запись, " \
-                                      "напиши вжух"
-                response["keyboard"] = list_to_keyboard(["вжух"])
+                response["message"] = "Заявка отправлена. Ожидайте подтверждения. Если хочешь отменить встречу, " \
+                                      "напиши – Отмена"
+                response["keyboard"] = list_to_keyboard(["Отмена"])
                 datetime_event = -1
                 if take_param(vk_id, "num_of_week", in_add_db_path) == "1":
                     datetime_event = make_datetime_event(week_day, meeting_time, 1)
@@ -309,8 +305,8 @@ def add_meeting_request(vk_id, text):
             else:
                 response["message"] = "Выбранное время недоступно"
         else:
-            response["message"] = "Отправь время в формате hh mm. Например, '12 00' Обрати внимание что ты должен " \
-                                  "записаться на ...00 или ...30 минут"
+            response["message"] = "Выбери удобное время из предложенных вариантов (встреча длится 60 минут, ты можешь " \
+                                  "записаться на начало следующего часа – ... 00; либо на половину часа – ... 30)"
             hhmms = ""
             day = take_param(vk_id, "weekday", in_add_db_path)
             for hhmm in free_time_next_week_dict[day]:
@@ -320,7 +316,7 @@ def add_meeting_request(vk_id, text):
             response["keyboard"] = list_to_time_keyboard(hhmms.split(", "))
     elif step == 9:
         response["exit"] = True
-        if text.lower() == "вжух":
+        if text.lower() == "отмена":
             set_free_time_abs(vk_id)
             back_just_dialog(vk_id, in_add_db_path)
             response["message"] = "Запись на консультацию отменена"
