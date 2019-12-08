@@ -8,9 +8,9 @@ from consts import vk_id_admin
 from consts import in_add_db_path
 from consts import events_db_path
 
-from plugins.db_tools.db_tools import take_param, create_clear_str
-from plugins.db_tools.db_tools import set_param
-from plugins.keyboard.kb_tools import list_to_keyboard
+from plugins.calendar.calendar_tools import set_free_time_abs
+
+from plugins.db_tools.db_tools import take_param
 
 from vk_tools import send_message
 from vk_tools import file_to_doc_attachment
@@ -79,6 +79,7 @@ def add_meeting_response(text):
             add_user_vk_id = df.iloc[0]["vk_id"]
             df = df.loc[df["vk_id"] != add_user_vk_id]
             df.to_csv(home_path + in_add_db_path, index=False, encoding='utf-8')
+            set_free_time_abs(vk_id)
             send_message(int(add_user_vk_id), "Тебя не могут принять в это время. Приносим свои извинения")
             if not df.empty:
                 add_user_vk_id = df.iloc[0]["vk_id"]
