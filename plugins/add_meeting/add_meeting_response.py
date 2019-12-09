@@ -79,7 +79,7 @@ def add_meeting_response(text):
             add_user_vk_id = df.iloc[0]["vk_id"]
             df = df.loc[df["vk_id"] != add_user_vk_id]
             df.to_csv(home_path + in_add_db_path, index=False, encoding='utf-8')
-            set_free_time_abs(vk_id)
+            set_free_time_abs(add_user_vk_id)
             send_message(int(add_user_vk_id), "Тебя не могут принять в это время. Приносим свои извинения")
             if not df.empty:
                 add_user_vk_id = df.iloc[0]["vk_id"]
@@ -133,8 +133,3 @@ def add_meeting_response(text):
     else:
         send_message(vk_id_admin, "Команда не найдена")
 
-
-# vk_id,name,surname,sex,overwrite,add_user_step,num_of_week,weekday,meeting_time,real_name,institute,course,count_was_here,subject,datetime_added,datetime_event
-# 319113373,Юля,Кошкина,1,1,9,1,monday,14:00,Юля Гольц,ИРЭ,4,0,Тык,2019-12-04 18:42:10.476042,2019-12-02 14:00:00
-# 175248464,Илья,Николаев,2,1,9,2,wednesday,16:30,Илья,ЭнМИ,1,0,Тык,2019-12-04 18:40:26.685744,2019-12-11 16:30:00
-# 450277471,Константин,Бочаров,2,1,9,1,thursday,15:30,чикибамбони,ИГВИЭ,Магистратура,54564564654,кнопка по имени Тык,2019-12-04 18:47:45.663443,2019-12-05 15:30:00
