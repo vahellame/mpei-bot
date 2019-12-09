@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from consts import vk
+from consts import vk, week_days_en2ru_dict
 from consts import home_path
 
 
@@ -72,3 +72,16 @@ def check_id(vk_id, db_path):
         return None
     return result
 
+
+def take_user_info(vk_id, db_path):
+    vk_id = int(vk_id)
+    info = ""
+    info = info + "Имя: " + take_param(vk_id, "real_name", db_path) + '\n' + \
+           "Страница в ВК: vk.com/id" + take_param(vk_id, "vk_id", db_path) + '\n' + \
+           "Планируемые дата и время встречи: " + take_param(vk_id, "datetime_event", db_path) + ', ' + \
+           week_days_en2ru_dict[take_param(vk_id, "weekday", db_path)] + '\n' + \
+           "Институт: " + take_param(vk_id, "institute", db_path) + '\n' + \
+           "Курс: " + take_param(vk_id, "course", db_path) + '\n' + \
+           "Сколько раз был(а): " + take_param(vk_id, "count_was_here", db_path) + '\n' + \
+           "Причина записи: " + take_param(vk_id, "subject", db_path)
+    return info

@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from consts import home_path, week_days_en2ru_dict
+from consts import home_path, week_days_en2ru_dict, month_strnum2ru_dict
 from consts import admin_stat_path
 from consts import vk_id_admin
 from consts import in_add_db_path
@@ -10,7 +10,7 @@ from consts import events_db_path
 
 from plugins.calendar.calendar_tools import set_free_time_abs
 
-from plugins.db_tools.db_tools import take_param
+from plugins.db_tools.db_tools import take_param, take_user_info
 
 from vk_tools import send_message
 from vk_tools import file_to_doc_attachment
@@ -46,20 +46,6 @@ def take_stat_key(stat, stat_path):
     return k
 
 
-def take_user_info(vk_id, db_path):
-    vk_id = int(vk_id)
-    info = ""
-    info = info + "Имя: " + take_param(vk_id, "real_name", db_path) + '\n' + \
-                  "Страница в ВК: vk.com/id" + take_param(vk_id, "vk_id", db_path) + '\n' + \
-                  "Планируемые день и место встречи: " + take_param(vk_id, "datetime_event", db_path) + ', ' + \
-                  week_days_en2ru_dict[take_param(vk_id, "weekday", db_path)] + '\n' + \
-                  "Институт: " + take_param(vk_id, "institute", db_path) + '\n' + \
-                  "Курс: " + take_param(vk_id, "course", db_path) + '\n' + \
-                  "Сколько раз был(а): " + take_param(vk_id, "count_was_here", db_path) + '\n' + \
-                  "Причина записи: " + take_param(vk_id, "subject", db_path)
-    return info
-
-
 def add_meeting_response(text):
     df = pd.read_csv(home_path + in_add_db_path, header=0, encoding='utf-8')
     if not df.empty:
@@ -74,7 +60,7 @@ def add_meeting_response(text):
             df.sort_values(["datetime_added"], inplace=True)
             add_user_vk_id = int(df.iloc[0]["vk_id"])
             user_info = take_user_info(add_user_vk_id, in_add_db_path)
-            send_message(vk_id_admin, user_info + '\n\n Место встречи?')
+            send_message(vk_id_admin, user_info + '\n\n Встреча будет в ...?')
     elif text.lower() == "нет" and int(take_stat_key("in_add_decision", admin_stat_path)) == 1:
         if not df.empty:
             add_user_vk_id = int(df.iloc[0]["vk_id"])
@@ -85,7 +71,7 @@ def add_meeting_response(text):
             if not df.empty:
                 add_user_vk_id = int(df.iloc[0]["vk_id"])
                 user_info = take_user_info(add_user_vk_id, in_add_db_path)
-                send_message(vk_id_admin, user_info + '\n\n Место встречи?')
+                send_message(vk_id_admin, user_info + '\n\n Встреча будет в ...?')
             else:
                 set_stat("in_add_decision", 0, admin_stat_path)
                 send_message(vk_id_admin, "Список пуст")
@@ -93,31 +79,44 @@ def add_meeting_response(text):
             send_message(vk_id_admin, "Список пуст")
     elif int(take_stat_key("in_add_decision", admin_stat_path)) == 1:
         if not df.empty:
+            ru_date_event = df.iloc[0]["datetime_event"].split(" ")[0].split("-")[2]
+            if ru_date_event[0] == "0":
+                ru_date_event = ru_date_event[-1]
+            ru_date_event = ru_date_event + " " + \
+                            month_strnum2ru_dict[df.iloc[0]["datetime_event"].split(" ")[0].split("-")[1]] + ", "
+            ru_weekday = week_days_en2ru_dict[df.iloc[0]["weekday"]]
+            if ru_weekday == "вторник":
+                ru_date_event += "во вторник"
+            elif ru_weekday == "понедельник" or ru_weekday == "четверг" or ru_weekday == "воскресенье":
+                ru_date_event = ru_date_event + "в " + ru_weekday
+            else:
+                ru_date_event = ru_date_event + "в " + ru_weekday[0:-1] + "у"
             add_user_vk_id = int(df.iloc[0]["vk_id"])
             new_event_dict = {
-                "vk_id":  int(df.iloc[0]["vk_id"]),
-                "name":  str(df.iloc[0]["name"]),
-                "surname":  str(df.iloc[0]["surname"]),
-                "sex":  int(df.iloc[0]["sex"]),
-                "real_name":  str(df.iloc[0]["real_name"]),
-                "institute":  str(df.iloc[0]["institute"]),
-                "course":  int(df.iloc[0]["course"]),
-                "count_was_here":  int(df.iloc[0]["count_was_here"]),
-                "subject":  str(df.iloc[0]["subject"]),
+                "vk_id": int(df.iloc[0]["vk_id"]),
+                "name": str(df.iloc[0]["name"]),
+                "surname": str(df.iloc[0]["surname"]),
+                "sex": int(df.iloc[0]["sex"]),
+                "real_name": str(df.iloc[0]["real_name"]),
+                "institute": str(df.iloc[0]["institute"]),
+                "course": int(df.iloc[0]["course"]),
+                "count_was_here": int(df.iloc[0]["count_was_here"]),
+                "subject": str(df.iloc[0]["subject"]),
                 "place": str(text),
-                "datetime_added":  str(df.iloc[0]["datetime_added"]),
-                "datetime_event":  str(df.iloc[0]["datetime_event"])
+                "datetime_added": str(df.iloc[0]["datetime_added"]),
+                "datetime_event": str(df.iloc[0]["datetime_event"])
             }
             df = df.loc[df["vk_id"] != int(add_user_vk_id)]
             df.to_csv(home_path + in_add_db_path, index=False, encoding='utf-8')
             df_event = pd.read_csv(home_path + events_db_path, header=0, encoding='utf-8')
             df_event = df_event.append(new_event_dict, ignore_index=True)
             df_event.to_csv(home_path + events_db_path, index=False, encoding='utf-8')
-            send_message(add_user_vk_id, "Твоя заявка одобрена. Тебя ждут в " + text)
+            add_text = "в " + new_event_dict["datetime_event"].split(" ")[1][:5] + ", " + ru_date_event
+            send_message(add_user_vk_id, "Твоя заявка одобрена. Тебя ждут в " + text + ", " + add_text)
             if not df.empty:
                 add_user_vk_id = int(df.iloc[0]["vk_id"])
                 user_info = take_user_info(add_user_vk_id, in_add_db_path)
-                send_message(vk_id_admin, user_info + '\n\n Место встречи?')
+                send_message(vk_id_admin, user_info + '\n\n Встреча будет в ...?')
             else:
                 set_stat("in_add_decision", 0, admin_stat_path)
                 send_message(vk_id_admin, "Список пуст")

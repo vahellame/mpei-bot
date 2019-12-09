@@ -20,7 +20,7 @@ from consts import vk_id_admin
 from consts import week_days_en
 from consts import week_days_en2ru_dict
 
-from plugins.db_tools.db_tools import take_param
+from plugins.db_tools.db_tools import take_param, take_user_info
 from plugins.db_tools.db_tools import check_param
 from plugins.db_tools.db_tools import set_param
 from plugins.db_tools.db_tools import check_id
@@ -240,7 +240,7 @@ def add_meeting_request(vk_id, text):
                         hhmms += ", "
                 response["message"] = "Выбери удобное время из предложенных вариантов (встреча длится 60 минут, " \
                                       "ты можешь записаться на начало следующего часа – ... 00; либо на половину " \
-                                      "часа – ... 30)\n{}".format(hhmms)
+                                      "часа – ... 30)\n\n{}".format(hhmms)
                 response["keyboard"] = list_to_time_keyboard(hhmms.split(", "))
             else:
                 response["message"] = "Выбери другой день недели"
@@ -263,7 +263,7 @@ def add_meeting_request(vk_id, text):
                         hhmms += ", "
                 response["message"] = "Выбери удобное время из предложенных вариантов (встреча длится 60 минут, " \
                                       "ты можешь записаться на начало следующего часа – ... 00; либо на половину " \
-                                      "часа – ... 30)\n{}".format(hhmms)
+                                      "часа – ... 30)\n\n{}".format(hhmms)
                 response["keyboard"] = list_to_time_keyboard(hhmms.split(", "))
             else:
                 response["message"] = "Выбери другой день недели"
@@ -301,18 +301,19 @@ def add_meeting_request(vk_id, text):
                 set_param(vk_id, "meeting_time", meeting_time, in_add_db_path)
                 set_param(vk_id, "datetime_added", str(datetime.now()), in_add_db_path)
                 set_param(vk_id, "datetime_event", str(datetime_event), in_add_db_path)
-                send_message(vk_id_admin, "Новая запись")
+                send_message(vk_id_admin, "Новая запись\n\n" + take_user_info(vk_id, in_add_db_path))
             else:
                 response["message"] = "Выбранное время недоступно"
         else:
-            response["message"] = "Выбери удобное время из предложенных вариантов (встреча длится 60 минут, ты можешь " \
-                                  "записаться на начало следующего часа – ... 00; либо на половину часа – ... 30)"
+            response["message"] = "Выбери удобное время из предложенных вариантов (встреча длится 60 минут, ты можешь "\
+                                  "записаться на начало следующего часа – ... 00; либо на половину часа – ... 30)\n\n"
             hhmms = ""
             day = take_param(vk_id, "weekday", in_add_db_path)
             for hhmm in free_time_next_week_dict[day]:
                 hhmms += hhmm
                 if hhmm != free_time_next_week_dict[day][-1]:
                     hhmms += ", "
+            response["message"] += hhmms
             response["keyboard"] = list_to_time_keyboard(hhmms.split(", "))
     elif step == 9:
         response["exit"] = True
