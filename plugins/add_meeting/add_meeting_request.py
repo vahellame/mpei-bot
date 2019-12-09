@@ -146,13 +146,7 @@ def add_meeting_request(vk_id, text):
             response["keyboard"] = kb_yes_no_vyh
         elif check_param(vk_id, "overwrite", in_add_db_path):
             if text.lower() == "да":
-                user_real_name = take_param(vk_id, "real_name", added_users_db_path)
-                user_institute = take_param(vk_id, "institute", added_users_db_path)
-                user_course = take_param(vk_id, "course", added_users_db_path)
                 set_param(vk_id, "add_user_step", 4, in_add_db_path)
-                set_param(vk_id, "real_name", user_real_name, in_add_db_path)
-                set_param(vk_id, "institute", user_institute, in_add_db_path)
-                set_param(vk_id, "course", user_course, in_add_db_path)
                 response["message"] = "Какая по счету встреча с психологом Службы психологической поддержки МЭИ?\n" \
                                       "Если не помнишь, или ни разу не был, отправь 0"
                 response["keyboard"] = list_to_keyboard(["0"])
@@ -297,6 +291,12 @@ def add_meeting_request(vk_id, text):
                     set_free_time(week_day, meeting_time, next_week_path, 1)
                 response["exit"] = True
                 response["keyboard"] = kb_main
+                user_real_name = take_param(vk_id, "real_name", added_users_db_path)
+                user_institute = take_param(vk_id, "institute", added_users_db_path)
+                user_course = take_param(vk_id, "course", added_users_db_path)
+                set_param(vk_id, "real_name", user_real_name, in_add_db_path)
+                set_param(vk_id, "institute", user_institute, in_add_db_path)
+                set_param(vk_id, "course", user_course, in_add_db_path)
                 set_param(vk_id, "add_user_step", 9, in_add_db_path)
                 set_param(vk_id, "meeting_time", meeting_time, in_add_db_path)
                 set_param(vk_id, "datetime_added", str(datetime.now()), in_add_db_path)
