@@ -1,15 +1,4 @@
 # Default ignored files
 
-#vk_token.py
-#db/users.csv
-#plugins/add_meeting/added_users.csv
-#plugins/add_meeting/events.csv
-#plugins/add_meeting/in_add.csv
-#plugins/calendar/current_week.csv
-#plugins/calendar/default_week.csv
-#plugins/calendar/next_week.csv
-#TEST_FILE_YOU_NEED_TO_DELET_IT.py
-
 .idea/
 .DS_Store
-*__pycache__*
