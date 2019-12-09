@@ -77,9 +77,9 @@ def add_meeting_response(text):
     elif text.lower() == "нет" and int(take_stat_key("in_add_decision", admin_stat_path)) == 1:
         if not df.empty:
             add_user_vk_id = df.iloc[0]["vk_id"]
+            set_free_time_abs(add_user_vk_id)
             df = df.loc[df["vk_id"] != add_user_vk_id]
             df.to_csv(home_path + in_add_db_path, index=False, encoding='utf-8')
-            set_free_time_abs(add_user_vk_id)
             send_message(int(add_user_vk_id), "Тебя не могут принять в это время. Приносим свои извинения")
             if not df.empty:
                 add_user_vk_id = df.iloc[0]["vk_id"]
@@ -94,8 +94,6 @@ def add_meeting_response(text):
         if not df.empty:
             add_user_vk_id = df.iloc[0]["vk_id"]
             df_add_user = df.loc[df["vk_id"] == add_user_vk_id]
-            df = df.loc[df["vk_id"] != add_user_vk_id]
-            df.to_csv(home_path + in_add_db_path, index=False, encoding='utf-8')
             new_user_dict = df_add_user.to_dict('list')
             new_event_dict = {
                 "vk_id": new_user_dict["vk_id"][0],
@@ -111,6 +109,8 @@ def add_meeting_response(text):
                 "datetime_added": new_user_dict["datetime_added"][0],
                 "datetime_event": new_user_dict["datetime_event"][0]
             }
+            df = df.loc[df["vk_id"] != add_user_vk_id]
+            df.to_csv(home_path + in_add_db_path, index=False, encoding='utf-8')
             df_event = pd.read_csv(home_path + events_db_path, header=0, encoding='utf-8')
             df_event = df_event.append(new_event_dict, ignore_index=True)
             df_event.to_csv(home_path + events_db_path, index=False, encoding='utf-8')
