@@ -65,7 +65,7 @@ def add_meeting_response(text):
         if not df.empty:
             add_user_vk_id = int(df.iloc[0]["vk_id"])
             set_free_time_abs(add_user_vk_id)
-            df = df.loc[int(df["vk_id"]) != int(add_user_vk_id)]
+            df = df.loc[df["vk_id"] != add_user_vk_id]
             df.to_csv(home_path + in_add_db_path, index=False, encoding='utf-8')
             send_message(int(add_user_vk_id), "Тебя не могут принять в это время. Приносим свои извинения")
             if not df.empty:
@@ -125,8 +125,8 @@ def add_meeting_response(text):
             send_message(vk_id_admin, "Список пуст")
     elif text.lower() == "таблица":
         df = pd.read_csv(home_path + events_db_path, header=0, encoding='utf-8')
-        df.to_excel(home_path + "overstudents.xlsx", index=False, encoding='utf-8')
-        attachment = file_to_doc_attachment(vk_id_admin, "overstudents.xlsx")
+        df.to_excel(home_path + "Студенты.xlsx", index=False, encoding='utf-8')
+        attachment = file_to_doc_attachment(vk_id_admin, "Студенты.xlsx")
         send_message(vk_id_admin, "", attachments=attachment)
     else:
         send_message(vk_id_admin, "Команда не найдена")

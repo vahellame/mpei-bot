@@ -1,1 +1,8 @@
 let it burn
+Error in /home/john/Desktop/mpei-bot/bot_mpei.py, line 103 "add_meeting_response(body)": 'False: boolean label can not be used without a boolean index'
+Error in /home/john/Desktop/mpei-bot/bot_mpei.py, line 103 "add_meeting_response(body)": 'False: boolean label can not be used without a boolean index'
+Error in /home/john/Desktop/mpei-bot/bot_mpei.py, line 103 "add_meeting_response(body)": 'False: boolean label can not be used without a boolean index'
+Error in /home/john/Desktop/mpei-bot/bot_mpei.py, line 103 "add_meeting_response(body)": 'False: boolean label can not be used without a boolean index'
+Error in /home/john/Desktop/mpei-bot/bot_mpei.py, line 103 "add_meeting_response(body)": 'False: boolean label can not be used without a boolean index'
+Error in /home/john/Desktop/mpei-bot/bot_mpei.py, line 103 "add_meeting_response(body)": 'False: boolean label can not be used without a boolean index'
+Error in /home/john/Desktop/mpei-bot/bot_mpei.py, line 103 "add_meeting_response(body)": 'False: boolean label can not be used without a boolean index'

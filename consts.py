@@ -6,7 +6,7 @@ import vk_api
 
 from vk_token import vk_token
 
-vk_id_admin = 554086055
+vk_id_admin = 576604927
 vk_key_admin = "0143"
 vk = vk_api.VkApi(token=vk_token)
 
