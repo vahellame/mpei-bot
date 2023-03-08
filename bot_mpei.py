@@ -38,7 +38,7 @@ from plugins.calendar.calendar_tools import set_free_time
 
 
 def daily_update():
-    send_message(vk_id_admin, "daily_update")
+    # send_message(vk_id_admin, "daily_update")
     today = datetime.datetime.now().weekday()
     today = week_days_num2en_dict[today]
     set_free_time(today, "11:00", current_week_path, 1)
@@ -49,7 +49,7 @@ def daily_update():
 
 
 def weekly_update():
-    send_message(vk_id_admin, "weekly_update")
+    # send_message(vk_id_admin, "weekly_update")
     df_next_week = pd.read_csv(home_path + next_week_path, header=0, encoding='utf-8')
     df_next_week.to_csv(home_path + current_week_path, encoding='utf-8', index=False)
     df_default_week = pd.read_csv(home_path + default_week_path, header=0, encoding='utf-8')
