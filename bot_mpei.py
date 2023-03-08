@@ -1,40 +1,34 @@
 # -*- coding: utf-8 -*-
 
+import datetime
+import time
+from threading import Thread
+
 # import os
 # import sys
 # import linecache
 import pandas as pd
 import schedule
-import time
-import datetime
 
-from threading import Thread
-
+from consts import current_week_path
+from consts import default_week_path
+from consts import home_path
+from consts import main_db_path
+from consts import next_week_path
 from consts import vk
 from consts import vk_id_admin
-from consts import week_days_num2en_dict
 from consts import vk_key_admin
-from consts import main_db_path
-from consts import home_path
-from consts import default_week_path
-from consts import current_week_path
-from consts import next_week_path
-
-from vk_tools import send_message
-
-from plugins.db_tools.db_tools import check_id
-from plugins.db_tools.db_tools import set_param
+from consts import week_days_num2en_dict
+from plugins.add_meeting.add_meeting_request import add_meeting_request
+from plugins.add_meeting.add_meeting_response import add_meeting_response
+from plugins.calendar.calendar_tools import set_free_time
 from plugins.db_tools.db_tools import back_just_dialog
+from plugins.db_tools.db_tools import check_id
 from plugins.db_tools.db_tools import check_just_dialog
 from plugins.db_tools.db_tools import check_param
-
-from plugins.add_meeting.add_meeting_request import add_meeting_request
-
-from plugins.add_meeting.add_meeting_response import add_meeting_response
-
+from plugins.db_tools.db_tools import set_param
 from plugins.keyboard.keyboards import kb_main
-
-from plugins.calendar.calendar_tools import set_free_time
+from vk_tools import send_message
 
 
 def daily_update():

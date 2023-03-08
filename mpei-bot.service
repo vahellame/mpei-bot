@@ -1,0 +1,13 @@
+[Unit]
+
+Description=FinArbitr Server
+
+[Service]
+
+Type=oheshot
+
+ExecStart=/usr/sbin/runuser -l fa -c '/home/john/mpei-bot/venv/bin/python /home/john/mpei-bot/bot_mpei.py'
+
+[Install]
+
+WantedBy=multi-user.target
