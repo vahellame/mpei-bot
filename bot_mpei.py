@@ -139,5 +139,4 @@ thread2 = Thread(target=shedule_update_loop)
 thread1.start()
 thread2.start()
 print("let it burn")
-thread1.join()
-thread2.join()
+
